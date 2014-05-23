@@ -1,0 +1,17 @@
+div.container {
+           position: absolute;
+           top: 50px;
+           left: 50px;
+           background-color: rgba(19, 247, 119, 0.14);
+           padding: 25px;
+           border-style: solid;
+           border-radius: 25px;
+           border-width: 1.5px;
+       }
+
+
+span.text {
+           font-size: xx-large;
+           font-family: monospace;
+           font-weight: 900;
+       }
