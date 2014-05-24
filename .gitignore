@@ -213,10 +213,12 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+############
+## IntelliJ IDEa
+############
+
 *.class
 *.iml
-.idea/workspace.xml
-data.json
-*.xml
-*.json
-*.json
+.idea/*
+nbactions.xml
