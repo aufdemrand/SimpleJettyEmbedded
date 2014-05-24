@@ -38,9 +38,7 @@ public class HelloWorld extends AbstractHandler {
 
             //
             // Get POST content (if any)
-            // TODO: Fix order.
-            // This method of getting the post content is incompatible with the Resumable
-            // server upload code... figure that out. This is why this is AFTER the Upload Handle
+            // Note: If getting post data as bytes, do not use this method.
             //
 
             StringBuilder content = new StringBuilder();
@@ -63,6 +61,7 @@ public class HelloWorld extends AbstractHandler {
             System.out.println("Content: " + content.toString());
             System.out.println("}\n");
 
+            // Only increase counter if the target isn't a favicon.ico request
             if (!target.equals("/favicon.ico"))
                 counter++;
 
@@ -93,41 +92,45 @@ public class HelloWorld extends AbstractHandler {
             //
 
 
-            // Build HTML document
+            // Build HTML document with HTML object.
 
             HTML html = new HTML();
 
             // <html>
             html.open(new HTML.Container("html"));
 
+            // <head>
             html.open(new HTML.Container("head"));
 
+            // <style>
             html.open(new HTML.Container("style")
             .setContent(IOUtils.toString(HelloWorld.class.getResourceAsStream("/style.css"))));
 
-
+            // </style> </head>
             html.close(2);
 
+            // <body>
             html.open(new HTML.Container("body"));
 
+            // <div class=container>
             html.open(new HTML.Container("div.container"));
 
+            // Get the text query, if any (will check for null before outputting)
+            String text_query = getQuery(request.getQueryString(), "text");
+
+            // <span class=text> ... </span>
             html.open(new HTML.Container("span.text").setContent("Hello, world! " +
-                    "This server has been hit " + counter + " times." +
-                    " Text = " + getQuery(request.getQueryString(), "text"))).close();
+                    "This server has been hit " + counter + " times. " +
+                    "Text query was: " + (text_query != null ? text_query : "none"))).close();
 
-            // Inside div
-
+            // </div>
             html.close();
 
-
-            // Closes the body and html
+            // </body> </html>
             html.close(2);
 
-
-            // Send to response
+            // Send the HTML to the response for output
             response.getWriter().append(html.toString());
-
 
 
         } catch (Exception e) {
